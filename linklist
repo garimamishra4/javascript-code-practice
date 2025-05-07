@@ -1,0 +1,96 @@
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
+class CircularLinkedList {
+  constructor() {
+    this.head = null;
+  }
+
+  add(data) {
+    let newNode = new Node(data);
+
+    if (this.head == null) {
+      this.head = newNode;
+      newNode.next = this.head;
+      return;
+    }
+
+    let current = this.head;
+
+    while (current.next !== this.head) {
+      current = current.next;
+    }
+
+    current.next = newNode;
+    newNode.next = this.head;
+  }
+
+  print() {
+    if (this.head == null) {
+      return "No record available";
+    }
+
+    let current = this.head;
+    let row = "";
+
+    while (current.next !== this.head) {
+      row += current.data + " -> ";
+
+      current = current.next;
+    }
+    row += current.data + " ->  NULL ";
+
+    console.log(row);
+  }
+
+  deletion(data) {
+    if (this.head == null) {
+      return;
+    }
+
+    let current = this.head;
+
+    let previous = null;
+
+    // ** If node find at first position
+    if (current.data === data) {
+      if (current.next === this.head) {
+        this.head = null;
+        return;
+      }
+
+      while (current.next !== this.head) {
+        current = current.next;
+      }
+
+      current.next = this.head.next;
+      this.head = this.head.next;
+      return;
+    }
+
+    do {
+      previous = current;
+      current = current.next; // -- Interation
+
+      if (current.data === data) {
+        previous.next = current.next;
+        return;
+      }
+    } while (current !== this.head);
+  }
+}
+
+//
+let list = new CircularLinkedList();
+list.add(10);
+list.add(20);
+list.add(30);
+list.add(40);
+
+list.print();
+list.deletion(40);
+list.print();
